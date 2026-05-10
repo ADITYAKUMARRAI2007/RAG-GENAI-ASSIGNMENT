@@ -1,0 +1,26 @@
+TRD Binoculars Specifications
+
+The specific details about the specifications of binoculars for TRD uses are as follows:
+
+1. **Magnification**: Minimum 12x
+2. **Objective Lens Diameter**: Minimum 50mm
+3. **Field of View at 1000m**: Minimum 90m
+4. **Prism Type**: BaK-4 (Roof)
+5. **Prism Glass Features**: Dielectric Prism
+6. **Lens Coating**: Fully Multi-Coating
+7. **Weight**: 600-1000g
+8. **Waterproof/Fog proof**: Yes, IPX7 minimum
+9. **Focus**: Center + Diopter
+10. **Sun Glass Filter for Use in Desert Areas**: Yes
+
+Overview:
+These specifications ensure that the binoculars provide a stable, clear image, are comfortable for handheld use, and are suitable for monitoring and inspecting OHE assets and transmission lines.
+
+Key Performance Characteristics:
+- The 12x magnification with a 50mm objective lens provides excellent light gathering capability and zoom range
+- BaK-4 prism with dielectric coating ensures superior image quality and brightness
+- Fully multi-coated optics reduce glare and reflections for clearer viewing
+- IPX7 waterproofing rating ensures durability in harsh field conditions
+- Center focus with diopter adjustment allows precise vision correction for extended viewing sessions
+- The 600-1000g weight range keeps the binoculars portable for extended field work
+- Sun glass filter is essential for desert operations where bright sunlight can cause eye strain
