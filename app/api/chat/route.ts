@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     // Retrieve top-k chunks
     let results: Array<[{ pageContent: string; metadata: Record<string, unknown> }, number]>;
     try {
-      results = await retrieveWithScores(question, 4);
+      results = await retrieveWithScores(question, 8);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       if (msg.includes("No document has been indexed")) {
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         model: "openai/gpt-4o-mini",
         temperature: 0,
-        max_tokens: 1024,
+        max_tokens: 2048,
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: question },

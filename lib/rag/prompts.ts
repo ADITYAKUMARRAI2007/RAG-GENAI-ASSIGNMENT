@@ -60,5 +60,5 @@ export function formatContext(
  * Similarity threshold — chunks below this score are considered irrelevant.
  * Cosine similarity range: 0 (unrelated) → 1 (identical).
  */
-// Lowered to 0.15 to handle OCR'd text which has slightly noisier embeddings
-export const SIMILARITY_THRESHOLD = 0.15;
+// Low threshold to work with OpenRouter embeddings which produce lower cosine scores
+export const SIMILARITY_THRESHOLD = 0.05;
