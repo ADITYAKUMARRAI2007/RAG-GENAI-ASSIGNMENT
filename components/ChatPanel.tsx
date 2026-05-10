@@ -17,13 +17,6 @@ interface Props {
   onFeedback: (message: string) => void;
 }
 
-const SUGGESTIONS = [
-  "What is this document mainly about?",
-  "Summarize the key requirements.",
-  "List the most important details.",
-  "What conclusion can I draw from this notebook?",
-];
-
 export default function ChatPanel({ isReady, notebookLabel, sourceCount, messages, setMessages, selectedSourceNames, onSaveLatestAnswer, onCopyLatestAnswer, onFeedback }: Props) {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -39,7 +32,7 @@ export default function ChatPanel({ isReady, notebookLabel, sourceCount, message
     if (!question.trim() || isLoading) return;
 
     if (!isReady) {
-      setError("Upload and index documents before asking a question.");
+      setError("Index your documents first using the Sources panel on the left.");
       return;
     }
 
@@ -116,26 +109,11 @@ export default function ChatPanel({ isReady, notebookLabel, sourceCount, message
               </div>
               <div className="hero-card-body">
                 <h2 className="hero-title">{notebookLabel}</h2>
-                <p className="hero-meta">{sourceCount} source{sourceCount === 1 ? "" : "s"} · May 10, 2026</p>
+                <p className="hero-meta">{sourceCount} source{sourceCount === 1 ? "" : "s"} · {new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}</p>
                 <p className="hero-copy">
-                  Notebook-style grounding with only the uploaded sources, strict fallback wording, and source-linked answers.
+                  Upload documents, then ask any question. Answers are grounded only in the uploaded sources.
                 </p>
               </div>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-2 max-w-3xl mt-2">
-              {SUGGESTIONS.map((suggestion) => (
-                <button key={suggestion} className="suggestion-chip" onClick={() => send(suggestion)}>
-                  {suggestion}
-                </button>
-              ))}
-            </div>
-
-            <div className="action-strip">
-              <button className="action-chip" onClick={onSaveLatestAnswer}>Save to note</button>
-              <button className="action-chip" onClick={onCopyLatestAnswer}>Copy</button>
-              <button className="action-chip" onClick={() => onFeedback("Marked as helpful.")}>Helpful</button>
-              <button className="action-chip" onClick={() => onFeedback("Marked as not helpful.")}>Not helpful</button>
             </div>
 
             <div className="empty-note-card">

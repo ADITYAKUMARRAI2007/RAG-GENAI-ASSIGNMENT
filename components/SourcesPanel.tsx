@@ -127,9 +127,14 @@ export default function SourcesPanel({
       let data: UploadResponse;
       try {
         res = await fetch("/api/upload", { method: "POST", body: formData });
+      } catch {
+        throw new Error("Network error — check your connection and try again.");
+      }
+
+      try {
         data = (await res.json()) as UploadResponse;
       } catch {
-        throw new Error("Server unreachable. Make sure `npm run dev` is running.");
+        throw new Error(`Server returned status ${res.status}. Try again or check logs.`);
       }
 
       if (!res.ok || !data.success) {

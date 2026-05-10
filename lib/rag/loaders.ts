@@ -286,17 +286,48 @@ export async function loadCSV(
   buffer: Buffer,
   fileName: string
 ): Promise<Document[]> {
-  const text = buffer.toString("utf-8").trim();
+  let raw = buffer.toString("utf-8");
+  // Strip BOM if present
+  if (raw.charCodeAt(0) === 0xfeff) raw = raw.slice(1);
+  const text = raw.trim();
   if (!text) throw new Error("CSV file appears to be empty.");
 
-  const lines = text.split("\n").filter((l) => l.trim().length > 0);
+  // Normalize line endings and split
+  const lines = text
+    .replace(/\r\n/g, "\n")
+    .replace(/\r/g, "\n")
+    .split("\n")
+    .filter((l) => l.trim().length > 0);
+
+  if (lines.length === 0) throw new Error("CSV file has no readable rows.");
+
   const headers = lines[0];
-  const chunkSize = 50;
+  const dataLines = lines.slice(1);
+
+  // If the file has only headers or is very small, return as a single doc
+  if (dataLines.length === 0) {
+    return [
+      new Document({
+        pageContent: text,
+        metadata: {
+          fileName,
+          pageNumber: 1,
+          chunkIndex: 0,
+          uploadedAt: new Date().toISOString(),
+          source: fileName,
+        } as DocumentMetadata,
+      }),
+    ];
+  }
+
+  // Chunk rows with headers prepended to each chunk for context
+  const chunkSize = 40;
   const docs: Document[] = [];
 
-  for (let i = 1; i < lines.length; i += chunkSize) {
-    const content = [headers, ...lines.slice(i, i + chunkSize)].join("\n");
-    const chunkIndex = Math.floor((i - 1) / chunkSize);
+  for (let i = 0; i < dataLines.length; i += chunkSize) {
+    const rows = dataLines.slice(i, i + chunkSize);
+    const content = [headers, ...rows].join("\n");
+    const chunkIndex = Math.floor(i / chunkSize);
     docs.push(
       new Document({
         pageContent: content,
@@ -304,27 +335,15 @@ export async function loadCSV(
           fileName,
           pageNumber: chunkIndex + 1,
           chunkIndex,
+          totalRows: dataLines.length,
           uploadedAt: new Date().toISOString(),
           source: fileName,
-        } as DocumentMetadata,
+        } as DocumentMetadata & { totalRows: number },
       })
     );
   }
 
-  return docs.length > 0
-    ? docs
-    : [
-        new Document({
-          pageContent: text,
-          metadata: {
-            fileName,
-            pageNumber: 1,
-            chunkIndex: 0,
-            uploadedAt: new Date().toISOString(),
-            source: fileName,
-          } as DocumentMetadata,
-        }),
-      ];
+  return docs;
 }
 
 // ─── Dispatcher ──────────────────────────────────────────────────────────────
