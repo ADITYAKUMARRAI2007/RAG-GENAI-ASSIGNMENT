@@ -312,7 +312,7 @@ These platforms support Docker, so you can run Qdrant as a service alongside the
 1. Connect this GitHub repo (root already contains `package.json` and `next.config.mjs`).
 2. **Build settings** (Site settings → Build & deploy → Continuous deployment → Build settings → Edit):
    - **Base directory:** leave **empty** (unless your app lives in a subfolder of the repo).
-   - **Publish directory:** leave **empty**. Do **not** set it to `.` or duplicate the base path. If base and publish resolve to the same folder, `@netlify/plugin-nextjs` fails with *“publish directory cannot be the same as the base directory”*.
+   - **Publish directory:** either leave **empty**, or set **`.next`** (same as `netlify.toml`). Do **not** leave Netlify’s default **publish = repo root** (`/opt/build/repo`): that matches the site base and makes `@netlify/plugin-nextjs` fail with *“publish directory cannot be the same as the base directory”*.
    - Build command: `npm run build` (or rely on `netlify.toml`).
 3. Environment variables: add the same keys as in `.env.example` (Production + previews as needed).
 4. Deploy; use **Clear cache and deploy** if a previous build cached bad settings.

@@ -1,11 +1,13 @@
-# Netlify + @netlify/plugin-nextjs:
-# In the dashboard: Site settings → Build & deploy → Continuous deployment → Build settings
-# - Base directory: leave EMPTY if this repo’s root is the Next app (package.json at repo root).
-# - Publish directory: leave EMPTY (do not use "." or the same path as Base directory).
-#   Setting both to the same path causes: "publish directory cannot be the same as the base directory".
+# Netlify + @netlify/plugin-nextjs
+#
+# If the dashboard sets Publish directory to the repo root (logs show publishOrigin: ui and
+# publish: /opt/build/repo), the plugin errors: publish cannot match the site base directory.
+# This file sets publish = ".next" so it overrides the UI (Netlify merges config: toml wins).
+# You can instead clear "Publish directory" in the dashboard and remove the line below.
 
 [build]
   command = "npm run build"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"
