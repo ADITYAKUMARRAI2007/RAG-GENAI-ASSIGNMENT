@@ -1,3 +1,9 @@
+# Netlify + @netlify/plugin-nextjs:
+# In the dashboard: Site settings → Build & deploy → Continuous deployment → Build settings
+# - Base directory: leave EMPTY if this repo’s root is the Next app (package.json at repo root).
+# - Publish directory: leave EMPTY (do not use "." or the same path as Base directory).
+#   Setting both to the same path causes: "publish directory cannot be the same as the base directory".
+
 [build]
   command = "npm run build"
 
