@@ -1,4 +1,5 @@
 import { QdrantVectorStore } from "@langchain/qdrant";
+import { QdrantClient } from "@qdrant/js-client-rest";
 import { MemoryVectorStore } from "langchain/vectorstores/memory";
 import { Document } from "@langchain/core/documents";
 import { getEmbeddings } from "./embeddings";
@@ -41,6 +42,18 @@ export async function storeDocuments(
 
   if (isQdrantConfigured()) {
     try {
+      // Clear old data so each upload is a fresh notebook
+      const client = new QdrantClient({
+        url: QDRANT_URL,
+        apiKey: QDRANT_API_KEY,
+      });
+      try {
+        await client.deleteCollection(COLLECTION_NAME);
+        console.log("[VectorStore] Cleared previous collection for fresh index.");
+      } catch {
+        // Collection might not exist yet — that's fine
+      }
+
       await QdrantVectorStore.fromDocuments(docs, embeddings, {
         url: QDRANT_URL,
         apiKey: QDRANT_API_KEY,
