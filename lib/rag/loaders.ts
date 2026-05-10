@@ -114,11 +114,6 @@ export async function loadPDF(buffer: Buffer, fileName: string): Promise<Documen
   const result = await runPDFWorker(buffer);
 
   if ("error" in result) {
-    if (result.error.includes("pdftoppm failed")) {
-      throw new Error(
-        "This PDF appears to be scanned/image-based and OCR conversion is unavailable in this deployment environment. Please upload a text-based PDF (or TXT/CSV), or run locally where Poppler (`pdftoppm`) is installed."
-      );
-    }
     throw new Error(`PDF parsing failed: ${result.error}`);
   }
 
